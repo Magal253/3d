@@ -99,7 +99,9 @@ void Desenha(void)
     //glutWireCube(30);
     //glutWireTeapot(30);
     //glutWireCone(10,30, 50, 50);
-    //glutWireSphere(5,35,35);
+    glutWireSphere(5,35,35);
+
+    /*
     angy+= 0.05;
     glPushMatrix();
         glPushMatrix();
@@ -131,6 +133,10 @@ void Desenha(void)
     if(angy >= 360){
         angy = 0;
     }
+    */
+
+
+
     //Desenha o objeto definido anteriormente: uma pirâmide
 	//DesenhaObjetoWireframe(&piramide);
 
