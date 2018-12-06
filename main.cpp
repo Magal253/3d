@@ -1,5 +1,5 @@
 //*****************************************************
-// Magy
+// Magy1
 // Exemplo3DPiramide.cpp
 // Um programa OpenGL que abre uma janela GLUT e desenha
 // o wireframe de uma pirâmide.
@@ -27,6 +27,7 @@ GLfloat angle, fAspect, angy = 0, angz = 0;
 GLfloat rotX, rotY, rotX_ini, rotY_ini;
 GLfloat obsX, obsY, obsZ, obsX_ini, obsY_ini, obsZ_ini;
 int x_ini = 50,y_ini,bot;
+int coli;
 
 // Define um vértice
 struct VERT{
@@ -36,7 +37,7 @@ struct VERT{
 // Define uma face
 struct FACE{
 	int total;	// total de vértices
-	int ind[4];	// índices para o vetor de vértices
+	int ind[5];	// índices para o vetor de vértices
 };
 
 // Define um objeto 3D
@@ -48,25 +49,21 @@ struct OBJ{
 
 // Definição dos vértices
 VERT vertices[] = {
-	{ -1, 0, -1 },	// 0 canto inf esquerdo tras.
-	{  1, 0, -1 },	// 1 canfo inf direito  tras.
-	{  1, 0,  1 },	// 2 canto inf direito  diant.
-	{ -1, 0,  1 },  // 3 canto inf esquerdo diant.
-	{  0, 2,  0 },  // 4 topo
+	{ 0, 10, 0},	// 0 canto inf esquerdo tras.
+	{ -10, 10, 0},	// 1 canfo inf direito  tras.
+	{ -10, -10, 0},	// 2 canto inf direito  diant.
+	{ 10, -10, 0},  // 3 canto inf esquerdo diant.
+	{ 10, 0, 0},  // 4 topo
 };
 
 // Definição das faces
 FACE faces[] = {
-	{ 4, { 0,3,2,1 }},	// base
-	{ 3, { 0,1,4,-1 }},	// lado traseiro
-	{ 3, { 3,0,4,-1 }},	// lado esquerdo
-	{ 3, { 1,2,4,-1 }},	// lado direito
-	{ 3, { 2,3,4,-1 }}	// lado dianteiro
+	{ 5, { 0,1,2,3,4 }}	// lado dianteiro
 };
 
 // Finalmente, define o objeto pirâmide
-OBJ piramide = {
-	vertices, faces, 5
+OBJ placa = {
+	vertices, faces, 1
 };
 
 // Desenha um objeto em wireframe
@@ -76,7 +73,7 @@ void DesenhaObjetoWireframe(OBJ *objeto)
 	// Percorre todas as faces
 	for(int f=0; f < objeto->total_faces; f++)
 	{
-		glBegin(GL_LINE_LOOP);
+		glBegin(GL_POLYGON);
 		// Percorre todos os vértices da face
 		for(int v=0; v < objeto->faces[f].total; v++)
 			glVertex3f(objeto->vertices[objeto->faces[f].ind[v]].x,
@@ -101,7 +98,7 @@ void Desenha(void)
     //glutWireCone(10,30, 50, 50);
     //glutWireSphere(5,35,35);
 
-    angy+= 0.028;
+    angy+= 0.075;
     glPushMatrix();
         glPushMatrix();
             glRotatef(angy, 0, 1, 0);
@@ -109,16 +106,19 @@ void Desenha(void)
             glColor3f(0.0f, 0.0f, 1.0f);
             glutSolidTorus(20, 500, 20, 400);
             glColor3f(0.0f, 0.0f, 0.0f);
-            glutWireTorus(19.75, 500, 20, 100);
+            glutWireTorus(19.80, 500, 20, 100);
             glPushMatrix();
                 for(float i = 0; i < 360 ; i+=45){
                     glPushMatrix();
                         glRotatef(i , 0, 0, 1);
                         glTranslatef(-510, 0, -10);  ///objetos com o centro situado do lado superior esquerdo da tela VERDE
                         glPushMatrix();
-                            glScalef(1, 0.01, 1);
+                            //glScalef(1, 0.01, 1);
                             glColor3f(0, 1, 0);
-                            glutSolidCube(20);
+                            //glutSolidCube(20);
+                            glRotatef(90,1,0,0);
+                            DesenhaObjetoWireframe(&placa);
+
                         glPopMatrix();
                     glPopMatrix();
                 }
@@ -127,9 +127,9 @@ void Desenha(void)
                         glRotatef(i , 0, 0, 1);
                         glTranslatef(-510, 0, 10);  ///objetos com o centro situado do lado inferior esquerdo da tela AMARELO
                         glPushMatrix();
-                            glScalef(1, 0.01, 1);
                             glColor3f(1, 1, 0);
-                            glutSolidCube(20);
+                            glRotatef(-90,1,0,0);
+                            DesenhaObjetoWireframe(&placa);
                         glPopMatrix();
                     glPopMatrix();
                 }
@@ -138,9 +138,10 @@ void Desenha(void)
                         glRotatef(i , 0, 0, 1);
                         glTranslatef(-490, 0, 10);  ///objetos com o centro situado do lado inferior direito da tela VERMELHO
                         glPushMatrix();
-                            glScalef(1, 0.01, 1);
                             glColor3f(1, 0, 0);
-                            glutSolidCube(20);
+                            glRotatef(-90,1,0,0);
+                            glRotatef(90,0,0,1);
+                            DesenhaObjetoWireframe(&placa);
                         glPopMatrix();
                     glPopMatrix();
                 }
@@ -149,9 +150,10 @@ void Desenha(void)
                         glRotatef(i , 0, 0, 1);
                         glTranslatef(-490, 0, -10);  ///objetos com o centro situado do lado superior direito da tela ROXO
                         glPushMatrix();
-                            glScalef(1, 0.01, 1);
                             glColor3f(1, 0, 1);
-                            glutSolidCube(20);
+                            glRotatef(90,1,0,0);
+                            glRotatef(90,0,0,1);
+                            DesenhaObjetoWireframe(&placa);
                         glPopMatrix();
                     glPopMatrix();
                 }
@@ -171,6 +173,7 @@ void Desenha(void)
             glPopMatrix();
     glPopMatrix();
 
+    //if
 
     ///glPointSize(2);
     ///glBegin(GL_POINTS);
@@ -179,6 +182,10 @@ void Desenha(void)
     ///    glVertex3f(-503.5 , -19.6, -21);
     ///glEnd();
     /// +/- 3.5 em X
+
+    //glPushMatrix();
+    //glPopMatrix();
+
 
 
     //glutWireTetrahedron();
