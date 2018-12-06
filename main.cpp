@@ -1,5 +1,5 @@
 //*****************************************************
-//
+// Magy
 // Exemplo3DPiramide.cpp
 // Um programa OpenGL que abre uma janela GLUT e desenha
 // o wireframe de uma pirâmide.
@@ -91,7 +91,7 @@ void Desenha(void)
 {
 	// Limpa a janela de visualização com a cor
 	// de fundo definida previamente
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Altera a cor do desenho para preto
 
@@ -99,18 +99,63 @@ void Desenha(void)
     //glutWireCube(30);
     //glutWireTeapot(30);
     //glutWireCone(10,30, 50, 50);
-    glutWireSphere(5,35,35);
+    //glutWireSphere(5,35,35);
 
-    /*
-    angy+= 0.05;
+    angy+= 0.028;
     glPushMatrix();
         glPushMatrix();
             glRotatef(angy, 0, 1, 0);
-            glRotatef(90, 1, 0, 0);
+            glRotatef(90, 1, 0, 0);  // Y virou Z e Z virou Y
             glColor3f(0.0f, 0.0f, 1.0f);
             glutSolidTorus(20, 500, 20, 400);
             glColor3f(0.0f, 0.0f, 0.0f);
-            glutWireTorus(20, 500, 20, 100);
+            glutWireTorus(19.75, 500, 20, 100);
+            glPushMatrix();
+                for(float i = 0; i < 360 ; i+=45){
+                    glPushMatrix();
+                        glRotatef(i , 0, 0, 1);
+                        glTranslatef(-510, 0, -10);  ///objetos com o centro situado do lado superior esquerdo da tela VERDE
+                        glPushMatrix();
+                            glScalef(1, 0.01, 1);
+                            glColor3f(0, 1, 0);
+                            glutSolidCube(20);
+                        glPopMatrix();
+                    glPopMatrix();
+                }
+                for(float i = 11.25; i < 375 ; i+=45){
+                    glPushMatrix();
+                        glRotatef(i , 0, 0, 1);
+                        glTranslatef(-510, 0, 10);  ///objetos com o centro situado do lado inferior esquerdo da tela AMARELO
+                        glPushMatrix();
+                            glScalef(1, 0.01, 1);
+                            glColor3f(1, 1, 0);
+                            glutSolidCube(20);
+                        glPopMatrix();
+                    glPopMatrix();
+                }
+                for(float i = 22.5; i < 375 ; i+=45){
+                    glPushMatrix();
+                        glRotatef(i , 0, 0, 1);
+                        glTranslatef(-490, 0, 10);  ///objetos com o centro situado do lado inferior direito da tela VERMELHO
+                        glPushMatrix();
+                            glScalef(1, 0.01, 1);
+                            glColor3f(1, 0, 0);
+                            glutSolidCube(20);
+                        glPopMatrix();
+                    glPopMatrix();
+                }
+                for(float i = 33.75; i < 390 ; i+=45){
+                    glPushMatrix();
+                        glRotatef(i , 0, 0, 1);
+                        glTranslatef(-490, 0, -10);  ///objetos com o centro situado do lado superior direito da tela ROXO
+                        glPushMatrix();
+                            glScalef(1, 0.01, 1);
+                            glColor3f(1, 0, 1);
+                            glutSolidCube(20);
+                        glPopMatrix();
+                    glPopMatrix();
+                }
+            glPopMatrix();
         glPopMatrix();
         glRotatef(angy, 0.0f, 1.0f, 0.0f);
     glPopMatrix();
@@ -122,9 +167,20 @@ void Desenha(void)
                 glColor3f(0,0,0);
                 glutSolidCube(7);
                 glColor3f(1,1,1);
-                glutWireCube(7);
+                glutWireCube(7.1);
             glPopMatrix();
     glPopMatrix();
+
+
+    ///glPointSize(2);
+    ///glBegin(GL_POINTS);
+    ///    glColor3f(1,1,1);
+    ///    glVertex3f(-496.5 , -19.6, -21);
+    ///    glVertex3f(-503.5 , -19.6, -21);
+    ///glEnd();
+    /// +/- 3.5 em X
+
+
     //glutWireTetrahedron();
     //glutWireOctahedron();
     //glutWireDodecahedron();
@@ -133,7 +189,6 @@ void Desenha(void)
     if(angy >= 360){
         angy = 0;
     }
-    */
 
 
 
@@ -148,6 +203,7 @@ void Desenha(void)
 // Função usada para especificar a posição do observador virtual
 void PosicionaObservador(void)
 {
+
 	// Especifica sistema de coordenadas do modelo
 	glMatrixMode(GL_MODELVIEW);
 	// Inicializa sistema de coordenadas do modelo
@@ -156,6 +212,9 @@ void PosicionaObservador(void)
 	glTranslatef(-obsX+500,-obsY,-obsZ);
 	glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
+
+
+	//gluLookAt(500,0,0,500,0,10,0,1,0);
 }
 
 // Função usada para especificar o volume de visualização
@@ -294,6 +353,7 @@ void Inicializa (void)
 	rotY = 0;
 	obsX = obsY = 0;
 	obsZ = 20;
+	glEnable(GL_DEPTH_TEST);
 }
 /*
 void Anima(int value)
@@ -314,7 +374,7 @@ void Anima(int value)
 int main(void)
 {
 	// Define do modo de operação da GLUT
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
 	// Especifica a posição inicial da janela GLUT
 	glutInitWindowPosition(5,5);
