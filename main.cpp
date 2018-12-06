@@ -1,5 +1,5 @@
 //*****************************************************
-// Magy1
+// Magy2
 // Exemplo3DPiramide.cpp
 // Um programa OpenGL que abre uma janela GLUT e desenha
 // o wireframe de uma pirâmide.
@@ -27,7 +27,10 @@ GLfloat angle, fAspect, angy = 0, angz = 0;
 GLfloat rotX, rotY, rotX_ini, rotY_ini;
 GLfloat obsX, obsY, obsZ, obsX_ini, obsY_ini, obsZ_ini;
 int x_ini = 50,y_ini,bot;
-int coli;
+int coliG[] = {0    ,45     ,90     ,135    ,180    ,225    ,270    ,315    };
+int coliY[] = {11.25,56.25  ,101.25 ,146.25 ,191.25 ,236.25 ,281.25 ,326.25 };
+int coliR[] = {22.5 ,47.5   ,112.5  ,157.5  ,202.5  ,247.5  ,292.5  ,337.5  };
+int coliP[] = {33.75,78.75  ,123.75 ,168.75 ,213.75 ,258.75 ,303.75 ,348.75 };
 
 // Define um vértice
 struct VERT{
@@ -122,7 +125,7 @@ void Desenha(void)
                         glPopMatrix();
                     glPopMatrix();
                 }
-                for(float i = 11.25; i < 375 ; i+=45){
+                for(float i = 11.25; i < 371.25 ; i+=45){
                     glPushMatrix();
                         glRotatef(i , 0, 0, 1);
                         glTranslatef(-510, 0, 10);  ///objetos com o centro situado do lado inferior esquerdo da tela AMARELO
@@ -133,7 +136,7 @@ void Desenha(void)
                         glPopMatrix();
                     glPopMatrix();
                 }
-                for(float i = 22.5; i < 375 ; i+=45){
+                for(float i = 22.5; i < 382.5 ; i+=45){
                     glPushMatrix();
                         glRotatef(i , 0, 0, 1);
                         glTranslatef(-490, 0, 10);  ///objetos com o centro situado do lado inferior direito da tela VERMELHO
@@ -145,7 +148,7 @@ void Desenha(void)
                         glPopMatrix();
                     glPopMatrix();
                 }
-                for(float i = 33.75; i < 390 ; i+=45){
+                for(float i = 33.75; i < 393.75 ; i+=45){
                     glPushMatrix();
                         glRotatef(i , 0, 0, 1);
                         glTranslatef(-490, 0, -10);  ///objetos com o centro situado do lado superior direito da tela ROXO
@@ -173,7 +176,6 @@ void Desenha(void)
             glPopMatrix();
     glPopMatrix();
 
-    //if
 
     ///glPointSize(2);
     ///glBegin(GL_POINTS);
