@@ -26,11 +26,11 @@
 GLfloat angle, fAspect, angy = 0, angz = 0;
 GLfloat rotX, rotY, rotX_ini, rotY_ini;
 GLfloat obsX, obsY, obsZ, obsX_ini, obsY_ini, obsZ_ini;
-int x_ini = 50,y_ini,bot;
-int coliG[] = {0    ,45     ,90     ,135    ,180    ,225    ,270    ,315    };
-int coliY[] = {11.25,56.25  ,101.25 ,146.25 ,191.25 ,236.25 ,281.25 ,326.25 };
-int coliR[] = {22.5 ,47.5   ,112.5  ,157.5  ,202.5  ,247.5  ,292.5  ,337.5  };
-int coliP[] = {33.75,78.75  ,123.75 ,168.75 ,213.75 ,258.75 ,303.75 ,348.75 };
+int x_ini = 50,y_ini,bot, um = 0;
+double coliG[] = {0    ,45     ,90     ,135    ,180    ,225    ,270    ,315    };
+double coliY[] = {11.25,56.25  ,101.25 ,146.25 ,191.25 ,236.25 ,281.25 ,326.25 };
+double coliR[] = {22.5 ,47.5   ,112.5  ,157.5  ,202.5  ,247.5  ,292.5  ,337.5  };
+double coliP[] = {33.75,78.75  ,123.75 ,168.75 ,213.75 ,258.75 ,303.75 ,348.75 };
 
 // Define um vértice
 struct VERT{
@@ -59,14 +59,28 @@ VERT vertices[] = {
 	{ 10, 0, 0},  // 4 topo
 };
 
+VERT Vtela[] = {
+    {-750,750,0},
+    {-750,-750,0},
+    {750,-750,0},
+    {750,750,0},
+};
 // Definição das faces
 FACE faces[] = {
-	{ 5, { 0,1,2,3,4 }}	// lado dianteiro
+	{5, {0,1,2,3,4}}	// lado dianteiro
+};
+
+FACE Ftela[] = {
+    {4, {0,1,2,3}}
 };
 
 // Finalmente, define o objeto pirâmide
 OBJ placa = {
 	vertices, faces, 1
+};
+
+OBJ tela = {
+    Vtela, Ftela, 1
 };
 
 // Desenha um objeto em wireframe
@@ -101,7 +115,16 @@ void Desenha(void)
     //glutWireCone(10,30, 50, 50);
     //glutWireSphere(5,35,35);
 
-    angy+= 0.075;
+    glPushMatrix();
+        glTranslatef(0,1000,0);
+        glColor3f(1,0.1,0.2);
+        DesenhaObjetoWireframe(&tela);
+        glPushMatrix();
+            glTranslatef(0, 0, 1);
+        glPopMatrix();
+    glPopMatrix();
+
+    angy+= 0.0625;
     glPushMatrix();
         glPushMatrix();
             glRotatef(angy, 0, 1, 0);
@@ -188,7 +211,12 @@ void Desenha(void)
     //glPushMatrix();
     //glPopMatrix();
 
-
+    for(int index = 0 ; index< sizeof(coliP) ; index ++){
+        if ((angy == coliP[index])&&(1)&&(1)/*&&(um == 0)*/)
+        glTranslatef(0, -1000, 1);
+        um++;
+    }
+    //if
 
     //glutWireTetrahedron();
     //glutWireOctahedron();
@@ -422,3 +450,5 @@ int main(void)
 
 	return 0;
 }
+
+
